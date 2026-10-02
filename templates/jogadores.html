@@ -22,37 +22,64 @@
             </div>
             <div class="linha-campos">
                 <div class="campo">
-                    <label for="idade">Idade</label>
-                    <input type="number" id="idade" name="idade" min="0">
+                    <label for="numero_camisa">Numero de camisa</label>
+                    <input type="number" id="numero_camisa" name="numero_camisa" min="0">
                 </div>
-                <div class="campo">
-                    <label for="posicao">Posição</label>
-                        TROCAR PARA SELECT OPTION
-                    <input type="text" id="posicao" name="posicao" placeholder="Ex: Atacante">
-                </div>
-            </div>
             <div class="campo">
                 <label for="time_id">Time</label>
                 <select id="time_id" name="time_id">
-                    <option value="">Sem time</option>
+                    {% for time in times %}
+                    <option value="{{ time.id }}">{{ time.nome }}</option>
+                    {% endfor %}
                 </select>
             </div>
-            <div class="acoes-form">
-                <button type="submit" class="botao">Cadastrar</button>
-                <a href="{{ url_for('listar_jogadores') }}" class="botao botao-secundario">Cancelar</a>
+                <div class="campo">
+                    <label>
+                        Posição
+                        <select name="posicao">
+                            <option value="atacante">Atacante</option>
+                            <option value="meio-campo">Meio-Campo</option>
+                            <option value="lateral">Lateral</option>
+                            <option value="zagueiro">Zagueiro</option>
+                            <option value="goleiro">Goleiro</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="acoes-form">
+                    <button type="submit" class="botao">Cadastrar</button>
+                    <a href="{{ url_for('listar_jogadores')}}" class="botao botao-secundario">Cancelar</a>
+                </div>
             </div>
         </form>
     </section>
-    {% endif %}
-
     <section class="painel">
         <h2>Lista de Jogadores</h2>
         {% if jogadores %}
         <table>
-
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>numero_camisa</th>
+                    <th>posicao</th>
+                    <th>time_id</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for jogador in jogadores %}
+                <tr>
+                    <td>{{ jogador.id }}</td>
+                    <td>{{ jogador.nome.capitalize()}}</td>
+                    <td>{{ jogador.numero_camisa }}</td>
+                    <td>{{ jogador.posicao.capitalize() }}</td>
+                    <td>{{ jogador.time_id }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
         </table>
         {% else %}
             <p class="vazio">Nenhum jogador cadastrado ainda.</p>
         {% endif %}
     </section>
+{% endif %}
 {% endblock %}
